@@ -100,7 +100,8 @@ class ShellTest(utils.TestCase):
                                'snapshot_id': None,
                                'metadata': {'key1': '"--test1"'},
                                'volume_type': None,
-                               'description': None}}
+                               'description': None,
+                               'multiattach': False}}
         self.assert_called_anytime('POST', '/volumes', expected)
 
     def test_metadata_args_limiter_display_name(self):
@@ -120,7 +121,8 @@ class ShellTest(utils.TestCase):
                                'snapshot_id': None,
                                'metadata': {'key1': '"--t1"'},
                                'volume_type': None,
-                               'description': None}}
+                               'description': None,
+                               'multiattach': False}}
         self.assert_called_anytime('POST', '/volumes', expected)
 
     def test_delimit_metadata_args(self):
@@ -140,7 +142,8 @@ class ShellTest(utils.TestCase):
                                'metadata': {'key1': '"test1"',
                                             'key2': '"test2"'},
                                'volume_type': None,
-                               'description': None}}
+                               'description': None,
+                               'multiattach': False}}
         self.assert_called_anytime('POST', '/volumes', expected)
 
     def test_delimit_metadata_args_display_name(self):
@@ -160,7 +163,8 @@ class ShellTest(utils.TestCase):
                                'snapshot_id': None,
                                'metadata': {'key1': '"t1"'},
                                'volume_type': None,
-                               'description': None}}
+                               'description': None,
+                               'multiattach': False}}
         self.assert_called_anytime('POST', '/volumes', expected)
 
     def test_list_filter_status(self):
