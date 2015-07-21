@@ -1054,6 +1054,15 @@ def do_retype(cs, args):
            metavar='<description>',
            default=None,
            help='Backup description. Default=None.')
+@utils.arg('--force',
+           action='store_true',
+           help='Allows or disallows backup of a volume '
+           'when the volume is attached to an instance. '
+           'If set to True, backs up the volume whether '
+           'its status is "available" or "in-use". The backup '
+           'of an "in-use" volume means your data is crash '
+           'consistent. Default=False.',
+           default=False)
 @utils.service_type('volumev2')
 def do_backup_create(cs, args):
     """Creates a volume backup."""
@@ -1067,7 +1076,8 @@ def do_backup_create(cs, args):
     backup = cs.backups.create(volume.id,
                                args.container,
                                args.name,
-                               args.description)
+                               args.description,
+                               args.force)
 
     info = {"volume_id": volume.id}
     info.update(backup._info)

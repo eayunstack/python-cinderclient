@@ -35,19 +35,22 @@ class VolumeBackupManager(base.ManagerWithFind):
     resource_class = VolumeBackup
 
     def create(self, volume_id, container=None,
-               name=None, description=None):
+               name=None, description=None,
+               force=False):
         """Creates a volume backup.
 
         :param volume_id: The ID of the volume to backup.
         :param container: The name of the backup service container.
         :param name: The name of the backup.
         :param description: The description of the backup.
+        :param force: If True, allows an in-use volume to be backed up.
         :rtype: :class:`VolumeBackup`
         """
         body = {'backup': {'volume_id': volume_id,
                            'container': container,
                            'name': name,
-                           'description': description}}
+                           'description': description,
+                           'force': force, }}
         return self._create('/backups', body, 'backup')
 
     def get(self, backup_id):
