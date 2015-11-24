@@ -40,6 +40,7 @@ def _stub_volume(**kwargs):
         "snapshot_id": None,
         "status": "available",
         "volume_type": "None",
+        "multiattach": "false",
         "links": [
             {
                 "href": "http://localhost/v2/fake/volumes/1234",
@@ -376,7 +377,7 @@ class FakeHTTPClient(base_client.HTTPClient):
                                                   'mode',
                                                   'mountpoint']
         elif action == 'os-detach':
-            assert body[action] is None
+            assert list(body[action]) == ['attachment_id']
         elif action == 'os-reserve':
             assert body[action] is None
         elif action == 'os-unreserve':
