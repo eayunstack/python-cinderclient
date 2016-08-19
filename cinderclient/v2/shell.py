@@ -529,7 +529,7 @@ def do_snapshot_list(cs, args):
 
     search_opts = {
         'all_tenants': all_tenants,
-        'display_name': args.name,
+        'name': args.name,
         'status': args.status,
         'volume_id': args.volume_id,
     }

@@ -195,7 +195,7 @@ class ShellTest(utils.TestCase):
 
     def test_snapshot_list_filter_with_unicode(self):
         self.run_command('snapshot-list --name=' + u'测试')
-        self.assert_called('GET', '/snapshots/detail?display_name=%E6%B5%8B%E8%AF%95')
+        self.assert_called('GET', '/snapshots/detail?name=%E6%B5%8B%E8%AF%95')
 
     def test_snapshot_list_filter_volume_id(self):
         self.run_command('snapshot-list --volume-id=1234')
