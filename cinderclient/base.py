@@ -24,10 +24,12 @@ import hashlib
 import os
 
 import six
+from six.moves.urllib.parse import urlencode
 
 from cinderclient import exceptions
 from cinderclient.openstack.common.apiclient import base as common_base
 from cinderclient import utils
+from cinderclient.openstack.common import strutils
 
 
 Resource = common_base.Resource
@@ -179,6 +181,16 @@ class ManagerWithFind(six.with_metaclass(abc.ABCMeta, Manager)):
     @abc.abstractmethod
     def list(self):
         pass
+
+    def _build_url(self, qparams):
+        """
+        Build request url from parameters
+        """
+        qparams = {k: strutils.safe_encode(v) for k, v in qparams.items()}
+        new_qparams = sorted(qparams.items(), key=lambda x: x[0])
+        query_string = "?%s" % urlencode(new_qparams)
+
+        return query_string
 
     def find(self, **kwargs):
         """
