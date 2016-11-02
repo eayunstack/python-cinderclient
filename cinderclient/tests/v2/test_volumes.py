@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2013 OpenStack Foundation
 #
 # All Rights Reserved.
@@ -113,9 +114,9 @@ class VolumesTest(utils.TestCase):
         cs.assert_called('POST', '/volumes/1234/action')
 
     def test_set_metadata(self):
-        cs.volumes.set_metadata(1234, {'k1': 'v2'})
+        cs.volumes.set_metadata(1234, {'k1': 'v2', 'тест': 'тест'})
         cs.assert_called('POST', '/volumes/1234/metadata',
-                         {'metadata': {'k1': 'v2'}})
+                         {'metadata': {'k1': 'v2', 'тест': 'тест'}})
 
     def test_delete_metadata(self):
         keys = ['key1']
