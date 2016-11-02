@@ -447,27 +447,22 @@ class Resource(object):
     def _add_details(self, info):
         for (k, v) in six.iteritems(info):
             try:
-                try:
-                    setattr(self, k, v)
-                except UnicodeEncodeError:
-                    pass
+                setattr(self, k, v)
                 self._info[k] = v
             except AttributeError:
                 # In this case we already defined the attribute on the class
                 pass
 
     def __getattr__(self, k):
-        if k not in self.__dict__ or k not in self._info:
-            # NOTE(bcwaldon): disallow lazy-loading if already loaded once
+        if k not in self.__dict__:
+            #NOTE(bcwaldon): disallow lazy-loading if already loaded once
             if not self.is_loaded():
                 self.get()
                 return self.__getattr__(k)
 
             raise AttributeError(k)
         else:
-            if k in self.__.dict__:
-                return self.__dict__[k]
-            return self._info[k]
+            return self.__dict__[k]
 
     def get(self):
         # set_loaded() first ... so if we have to bail, we know we tried.

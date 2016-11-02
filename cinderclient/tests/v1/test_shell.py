@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2010 Jacob Kaplan-Moss
 
 # Copyright (c) 2011 OpenStack Foundation
@@ -121,10 +120,6 @@ class ShellTest(utils.TestCase):
         self.run_command('list --display-name=1234')
         self.assert_called('GET', '/volumes/detail?display_name=1234')
 
-    def test_list_filter_with_unicode(self):
-        self.run_command('list --display-name=' + u'测试')
-        self.assert_called('GET', '/volumes/detail?display_name=%E6%B5%8B%E8%AF%95')
-
     def test_list_all_tenants(self):
         self.run_command('list --all-tenants=1')
         self.assert_called('GET', '/volumes/detail?all_tenants=1')
@@ -158,10 +153,6 @@ class ShellTest(utils.TestCase):
     def test_restore(self):
         self.run_command('backup-restore 1234')
         self.assert_called('POST', '/backups/1234/restore')
-
-    def test_snapshot_list_filter_with_unicode(self):
-        self.run_command('snapshot-list --display-name=' + u'测试')
-        self.assert_called('GET', '/snapshots/detail?display_name=%E6%B5%8B%E8%AF%95')
 
     def test_snapshot_list_filter_volume_id(self):
         self.run_command('snapshot-list --volume-id=1234')

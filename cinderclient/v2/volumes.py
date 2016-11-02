@@ -16,6 +16,10 @@
 """Volume interface (v2 extension)."""
 
 import six
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
 
 from cinderclient import base
 
@@ -267,7 +271,8 @@ class VolumeManager(base.ManagerWithFind):
         # Transform the dict to a sequence of two-element tuples in fixed
         # order, then the encoded string will be consistent in Python 2&3.
         if qparams:
-            query_string = self._build_url(qparams)
+            new_qparams = sorted(qparams.items(), key=lambda x: x[0])
+            query_string = "?%s" % urlencode(new_qparams)
         else:
             query_string = ""
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2013 OpenStack Foundation
 # All Rights Reserved.
 #
@@ -91,10 +90,6 @@ class ShellTest(utils.TestCase):
     def test_list_filter_name(self):
         self.run_command('list --name=1234')
         self.assert_called('GET', '/volumes/detail?name=1234')
-
-    def test_list_filter_with_unicode(self):
-        self.run_command('list --name=' + u'测试')
-        self.assert_called('GET', '/volumes/detail?name=%E6%B5%8B%E8%AF%95')
 
     def test_list_all_tenants(self):
         self.run_command('list --all-tenants=1')
@@ -192,10 +187,6 @@ class ShellTest(utils.TestCase):
         expected = {'backup-record': {'backup_service': 'fake.driver',
                                       'backup_url': 'URL_STRING'}}
         self.assert_called('POST', '/backups/import_record', expected)
-
-    def test_snapshot_list_filter_with_unicode(self):
-        self.run_command('snapshot-list --name=' + u'测试')
-        self.assert_called('GET', '/snapshots/detail?display_name=%E6%B5%8B%E8%AF%95')
 
     def test_snapshot_list_filter_volume_id(self):
         self.run_command('snapshot-list --volume-id=1234')
@@ -602,7 +593,3 @@ class ShellTest(utils.TestCase):
         self.run_command('replication-reenable 1234')
         self.assert_called('POST', '/volumes/1234/action',
                            body={'os-reenable-replica': None})
-
-    def test_cgsnapshot_list_filter_with_unicode(self):
-        self.run_command('cgsnapshot-list --status=' + u'测试')
-        self.assert_called('GET', '/cgsnapshots/detail?status=%E6%B5%8B%E8%AF%95')

@@ -17,6 +17,10 @@
 Volume interface (1.1 extension).
 """
 
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
 import six
 from cinderclient import base
 
@@ -206,7 +210,7 @@ class VolumeManager(base.ManagerWithFind):
             if val:
                 qparams[opt] = val
 
-        query_string = self._build_url(qparams) if qparams else ""
+        query_string = "?%s" % urlencode(qparams) if qparams else ""
 
         detail = ""
         if detailed:
