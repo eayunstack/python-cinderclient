@@ -16,10 +16,6 @@
 """cgsnapshot interface (v2 extension)."""
 
 import six
-try:
-    from urllib import urlencode
-except ImportError:
-    from urllib.parse import urlencode
 
 from cinderclient import base
 
@@ -87,7 +83,7 @@ class CgsnapshotManager(base.ManagerWithFind):
             if val:
                 qparams[opt] = val
 
-        query_string = "?%s" % urlencode(qparams) if qparams else ""
+        query_string = self._build_url(qparams) if qparams else ""
 
         detail = ""
         if detailed:
