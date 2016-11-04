@@ -186,7 +186,12 @@ class ManagerWithFind(six.with_metaclass(abc.ABCMeta, Manager)):
         """
         Build request url from parameters
         """
-        qparams = {k: strutils.safe_encode(v) for k, v in qparams.items()}
+        for k, v in qparams.items():
+            try:
+                qparams[k] = strutils.safe_encode(v)
+            except TypeError:
+                continue
+
         new_qparams = sorted(qparams.items(), key=lambda x: x[0])
         query_string = "?%s" % urlencode(new_qparams)
 
