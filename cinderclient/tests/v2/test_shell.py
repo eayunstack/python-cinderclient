@@ -15,6 +15,7 @@
 #    under the License.
 
 import fixtures
+import mock
 from requests_mock.contrib import fixture as requests_mock_fixture
 
 from cinderclient import client
@@ -108,9 +109,42 @@ class ShellTest(utils.TestCase):
         self.run_command('list --limit=10')
         self.assert_called('GET', '/volumes/detail?limit=10')
 
-    def test_list_sort(self):
-        self.run_command('list --sort_key=name --sort_dir=asc')
-        self.assert_called('GET', '/volumes/detail?sort_dir=asc&sort_key=name')
+    def test_list_sort_valid(self):
+        self.run_command('list --sort_key=id --sort_dir=asc')
+        self.assert_called('GET', '/volumes/detail?sort_dir=asc&sort_key=id')
+
+    def test_list_sort_name(self):
+        # Client 'name' key is mapped to 'display_name'
+        self.run_command('list --sort_key=name')
+        self.assert_called('GET', '/volumes/detail?sort_key=display_name')
+
+    def test_list_sort_key_invalid(self):
+        self.assertRaises(ValueError,
+                          self.run_command,
+                          'list --sort_key=foo --sort_dir=asc')
+
+    def test_list_sort_dir_invalid(self):
+        self.assertRaises(ValueError,
+                          self.run_command,
+                          'list --sort_key=id --sort_dir=foo')
+
+    def test_list_reorder_with_sort(self):
+        # sortby_index is None if there is sort information
+        for cmd in ['list --sort_key=name',
+                    'list --sort_dir=asc',
+                    'list --sort_key=name --sort_dir=asc']:
+            with mock.patch('cinderclient.utils.print_list') as mock_print:
+                self.run_command(cmd)
+                mock_print.assert_called_once_with(
+                    mock.ANY, mock.ANY, sortby_index=None)
+
+    def test_list_reorder_without_sort(self):
+        # sortby_index is 0 without sort information
+        for cmd in ['list', 'list --all-tenants']:
+            with mock.patch('cinderclient.utils.print_list') as mock_print:
+                self.run_command(cmd)
+                mock_print.assert_called_once_with(
+                    mock.ANY, mock.ANY, sortby_index=0)
 
     def test_list_availability_zone(self):
         self.run_command('availability-zone-list')
